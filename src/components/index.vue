@@ -7,7 +7,7 @@
         <van-col span="12">span: 8</van-col>
     </van-row>
 
-    <van-tabbar v-model="active">
+    <van-tabbar v-model="tabActive">
         <van-tabbar-item icon="home">首页</van-tabbar-item>
         <van-tabbar-item icon="pending-orders" dot>资源</van-tabbar-item>
         <van-tabbar-item icon="like-o" info="20">我的</van-tabbar-item>
@@ -27,7 +27,7 @@ Vue.use(Tabbar).use(TabbarItem).use(Row).use(Col);
 export default {
     data(){
         return{
-            active: 0
+            tabActive: 0
         }
     }
 }
