@@ -1,7 +1,8 @@
 let host="http://rap2api.taobao.org/app/mock/95149";
 
 let url={
-    signin:'/signin'
+    signin:'/signin',
+    searchyw:'/searchyw'
 }
 
 for(let key in url){

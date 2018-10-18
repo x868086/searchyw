@@ -14,7 +14,6 @@
                     label="用户名"
                     icon="question"
                     placeholder="请输入用户名"
-                    @click-icon="question"
                 />
                 <van-field
                         v-model="password"
@@ -31,6 +30,11 @@
                     @click="signin($event)">登录</van-button>
             </van-col>
         </van-row>
+
+
+<div class="concat_flag">
+    <van-icon name="phone" size="24px" @click="concat"/>
+</div>
 
     </div>
 </template>
@@ -58,8 +62,8 @@ export default {
         
     },
     methods:{
-        question(){
-
+        concat(){
+           Toast({message:'使用反馈18607201381',duration:3000,position:{bottom:'-10'}}) 
         },
         signin(event){
             let that=this
@@ -88,7 +92,6 @@ export default {
 
 
 <style>
-
 .row-container{
     transform:translateY(50%)
 }
@@ -99,10 +102,18 @@ export default {
 
 .clicklogin{
     margin-top:20px;
+    width:350px;
+    background-color:#4C55A2;
+    color:#fff;
 }
-    /* #container{
-        background-color:#35495E
-    } */
+
+.concat_flag{
+    position:fixed;
+    bottom:0;
+    right:10px;
+}
+
+
 </style>
 
 
