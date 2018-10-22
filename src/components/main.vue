@@ -5,22 +5,22 @@
                     <van-icon  name="sousuo" size="60px" color="#3A459D"
                     @click="getsearch"></van-icon>
                     <p class="icon_title">异网</p>
-                    <p class="icon_tips">累计查询</p>
+                    <p class="icon_tips">累计查询:{{queryCounts}}次</p>
             </van-col>
             <van-col span="12" class="icon_wrap">
                 <van-icon name="zijinguanli" size="60px" color="#3A459D"></van-icon>
                 <p class="icon_title">佣金</p>
-                <p class="icon_tips">累计查询</p>
+                <p class="icon_tips">￥:{{totalsalary}}</p>
             </van-col>
             <van-col span="12" class="icon_wrap">
                 <van-icon name="jiankanfuwu" size="60px" color="#3A459D"></van-icon>
                 <p class="icon_title">指标</p>
-                <p class="icon_tips">累计查询</p>
+                <p class="icon_tips">当日发展:{{devday}}</p>
             </van-col>
             <van-col span="12" class="icon_wrap">
                 <van-icon name="meiziguanli" size="60px" color="#3A459D" />
                 <p class="icon_title">资讯</p>
-                <p class="icon_tips">累计查询</p>
+                <p class="icon_tips">待查收:{{msgcount}}</p>
             </van-col>
         </van-row>
 
@@ -42,12 +42,19 @@
 import Vue from 'vue';
 import { Tabbar, TabbarItem,Row, Col,Icon } from 'vant';
 Vue.use(Tabbar).use(TabbarItem).use(Row).use(Col).use(Icon);
+import axios from 'axios';
+
+import url from '../modules/js/api.js';
 
 export default {
     name:'main',
     data(){
         return{
-            active: 0
+            active: 0,
+            queryCounts:'',
+            totalsalary:'',
+            devday:'',
+            msgcount:''
         }
     },
 
@@ -55,6 +62,15 @@ export default {
         getsearch(){
             this.$router.push({path:'/searchyw'})
         }
+    },
+
+    created(){
+        axios.post(url.userinfo,{userId:'admin123'}).then(res=>{
+            this.queryCounts=res.data.queryCounts
+            this.totalsalary=res.data.totalsalary
+            this.devday=res.data.devday
+            this.msgcount=res.data.msgcount
+        })
     }
 }
 </script>
