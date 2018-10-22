@@ -20,16 +20,38 @@
             <van-col span="12" class="icon_wrap">
                 <van-icon name="meiziguanli" size="60px" color="#3A459D" />
                 <p class="icon_title">资讯</p>
-                <p class="icon_tips">待查收:{{msgcount}}</p>
+                <p class="icon_tips">待阅:{{msgcount}}</p>
             </van-col>
         </van-row>
 
 
 
-    <van-tabbar v-model="active">
-        <van-tabbar-item icon="home">首页</van-tabbar-item>
-        <van-tabbar-item icon="pending-orders" dot>资源</van-tabbar-item>
-        <van-tabbar-item icon="like-o" info="20">我的</van-tabbar-item>
+
+    <van-tabbar v-model="active" class="tabbar_wrap">
+        <van-tabbar-item info="3">
+            <span>工具</span>
+            <img
+            slot="icon"
+            slot-scope="props"
+            :src="props.active ? icon.active : icon.normal"
+            >
+        </van-tabbar-item>
+        <van-tabbar-item icon="chat" v-show="concatshow">
+            <span>通讯录</span>
+            <img
+            slot="icon"
+            slot-scope="props"
+            :src="props.active ? icon.iconcontacts : icon.iconcontactso"
+            >
+        </van-tabbar-item>
+        <van-tabbar-item icon="records">
+            <span>我的</span>
+            <img
+            slot="icon"
+            slot-scope="props"
+            :src="props.active ? icon.iconpro : icon.iconpros"
+            >
+        </van-tabbar-item>
     </van-tabbar>
 </div>
 </template>
@@ -45,16 +67,30 @@ Vue.use(Tabbar).use(TabbarItem).use(Row).use(Col).use(Icon);
 import axios from 'axios';
 
 import url from '../modules/js/api.js';
+import iconWork from '../assets/iconpng/icon-work.png';
+import iconWorks from '../assets/iconpng/icon-works.png';
+import iconPro from '../assets/iconpng/icon-pro.png';
+import iconPros from '../assets/iconpng/icon-pros.png';
+import iconContacts from '../assets/iconpng/icon-contacts.png';
+import iconContactsO from '../assets/iconpng/icon-contacts-o.png';
 
 export default {
-    name:'main',
     data(){
         return{
             active: 0,
             queryCounts:'',
             totalsalary:'',
             devday:'',
-            msgcount:''
+            msgcount:'',
+            concatshow:'',
+            icon:{
+                normal: iconWork,
+                active: iconWorks,
+                iconpro: iconPro,
+                iconpros: iconPros,
+                iconcontacts:iconContacts,
+                iconcontactso:iconContactsO
+            }
         }
     },
 
@@ -70,6 +106,7 @@ export default {
             this.totalsalary=res.data.totalsalary
             this.devday=res.data.devday
             this.msgcount=res.data.msgcount
+            this.concatshow=res.data.concatshow
         })
     }
 }
@@ -163,6 +200,18 @@ export default {
     .icon_tips{
         color:#666666;
     }
+    
+    
+    .tabbar_wrap{
+        height:60px;
+    }
+    .tabbar_wrap img{
+        height:25px;
+    }
+    .tabbar_wrap span{
+        font-size:16px;
+    }
+
 </style>
 
 
