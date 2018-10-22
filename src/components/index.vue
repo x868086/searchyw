@@ -1,126 +1,119 @@
 <template>
-<div id="container">
-        <van-row class="opt_wrap">
-            <van-col span="12">
-                    <van-icon class="icon_wrap" name="sousuo" size="60px"
-                    @click="getsearch"></van-icon>
+    <div id="container">
+        <van-row class="row-container">
+            <van-col span="8" offset="8"><h2 class="title">UNI CMS</h2></van-col>
+            
+            <van-col span="8" offset="8"><span class="tips">输入7位渠道编码登录</span></van-col>
+
+            <van-col span="24">
+            <van-cell-group>
+                <van-field
+                    v-model="username"
+                    required
+                    clearable
+                    label="用户名"
+                    icon="question"
+                    placeholder="请输入用户名"
+                />
+                <van-field
+                        v-model="password"
+                        type="password"
+                        label="密码"
+                        placeholder="请输入密码"
+                        required
+                />
+            </van-cell-group>
             </van-col>
-            <van-col span="12">
-                <van-icon class="icon_wrap" name="zijinguanli" size="60px"></van-icon>
-            </van-col>
-            <van-col span="12">
-                <van-icon class="icon_wrap" name="jiankanfuwu" size="60px"></van-icon>
-            </van-col>
-            <van-col span="12">
-                <van-icon class="icon_wrap" name="meiziguanli" size="60px"/>
+
+            <van-col span="24" >
+                    <van-button round type="default" class="clicklogin"
+                    @click="signin($event)">登录</van-button>
             </van-col>
         </van-row>
 
 
-
-    <van-tabbar v-model="active">
-        <van-tabbar-item icon="home">首页</van-tabbar-item>
-        <van-tabbar-item icon="pending-orders" dot>资源</van-tabbar-item>
-        <van-tabbar-item icon="like-o" info="20">我的</van-tabbar-item>
-    </van-tabbar>
+<div class="concat_flag">
+    <van-icon name="phone" size="24px" @click="concat"/>
 </div>
+
+    </div>
 </template>
 
-
-
-
-
 <script>
-import Vue from 'vue';
-import { Tabbar, TabbarItem,Row, Col,Icon } from 'vant';
-Vue.use(Tabbar).use(TabbarItem).use(Row).use(Col).use(Icon);
+import Vue from 'vue'
+import { Row, Col,Field ,Button,CellGroup,Toast} from 'vant';
+Vue.use(Row).use(Col).use(Field).use(Button).use(CellGroup)
+    .use(Toast);
+
+import axios from 'axios';
+import url from '../modules/js/api.js'
+
 
 export default {
+    name:'index',
     data(){
         return{
-            active: 0
+            username:'',
+            password:''
         }
     },
-
+    mounted(){
+        console.log(url.signin)
+        
+    },
     methods:{
-        getsearch(){
-            this.$router.push({path:'/searchyw'})
+        concat(){
+           Toast({message:'使用反馈18607201381',duration:3000,position:{bottom:'-10'}}) 
+        },
+        signin(event){
+            let that=this
+            event.preventDefault()
+            if(!!this.username === false || !!this.password ===false){
+                return Toast({message:'请完善账号密码',duration:1000});
+                
+            }
+            let lastSigninDate=new Date()
+            let userData=new FormData()
+            userData.append('username',this.username)
+            userData.append('password',this.password)
+            userData.append('lastSigninDate',lastSigninDate)
+            axios.post(url.signin,userData).then(res=>{
+                if(res.data.statusCode===200){
+            console.log(this.$router.push)
+                    // this.$route()
+                    this.$router.push({ path: '/main' })
+
+                }
+            })
         }
     }
 }
 </script>
 
 
+<style>
+.row-container{
+    transform:translateY(50%)
+}
+.tips{
+    font-size:12px;
+    color:#ccc;
+}
+
+.clicklogin{
+    margin-top:20px;
+    width:350px;
+    background-color:#4C55A2;
+    color:#fff;
+}
+
+.concat_flag{
+    position:fixed;
+    bottom:0;
+    right:10px;
+}
 
 
-<style scoped>
-    @font-face {
-        font-family: 'custom-iconfont';
-        src: url('../assets/iconfont/iconfont.ttf') format('truetype');
-    }
-
-    .van-icon {
-        font-family: 'vant-icon', 'custom-iconfont' !important;
-    }
-
-    .van-icon-zhibofuwu:before { content: "\e658"; }
-
-    .van-icon-xinwenzhongxin:before { content: "\e659"; }
-
-    .van-icon-yonghuguanli:before { content: "\e65a"; }
-
-    .van-icon-meiziguanli:before { content: "\e65d"; }
-
-    .van-icon-jiankanfuwu:before { content: "\e65e"; }
-
-    .van-icon-minganciku:before { content: "\e65f"; }
-
-    .van-icon-zhihuizhongxin:before { content: "\e660"; }
-
-    .van-icon-zijinguanli:before { content: "\e661"; }
-
-    .van-icon-quanxianxitong:before { content: "\e662"; }
-
-    .van-icon-dashuju:before { content: "\e666"; }
-
-    .van-icon-yonghu:before { content: "\e667"; }
-
-    .van-icon-xiaoxi:before { content: "\e668"; }
-
-    .van-icon-shangcheng:before { content: "\e669"; }
-
-    .van-icon-shezhi:before { content: "\e66a"; }
-
-    .van-icon-yulan:before { content: "\e66b"; }
-
-    .van-icon-sousuo:before { content: "\e66c"; }
-
-    .van-icon-tianjia:before { content: "\e66d"; }
-
-    .van-icon-dianhua:before { content: "\e66e"; }
-
-    .van-icon-shoucang:before { content: "\e66f"; }
-
-    .van-icon-home:before { content: "\e670"; }
-
-    .van-icon-weizhi:before { content: "\e672"; }
-
-    .van-icon-tupian:before { content: "\e674"; } 
-
-
-    #container{
-        padding-top:60px;
-        background-color:#4C55A2;
-    }
-    .opt_wrap{
-        padding:50px 20px;
-        border-top-left-radius:20%;
-        border-top-right-radius:20%;
-        background-color:#fff;
-    }
-    .icon_wrap{
-        padding:30px;
-    }
 </style>
 
 

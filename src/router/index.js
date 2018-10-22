@@ -3,13 +3,13 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-import login from '../components/login.vue';
 import index from '../components/index.vue';
+import main from '../components/main.vue';
 import searchyw from '../components/searchyw.vue';
 
 const routes=[
-    {path: '/login',name: 'login',component: login},
-    {path: '/index',name: 'index',component: index},
+    {path: '/',name: 'index',component: index},
+    {path: '/main',name: 'main',component: main},
     {path:'/searchyw',name:'searchyw',component: searchyw}
 ]
 

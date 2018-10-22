@@ -21,10 +21,10 @@
                 <van-tag round type="success" v-show="userInfo.ywflag===true">异网</van-tag>
                 <van-icon name="aim" size="22px"/>累计查询次数{{queryCounts}}
                 </div>
-                <ul v-show="userInfo.deviceNumber instanceof Array"
+                <!-- <ul v-show="userInfo.deviceNumber instanceof Array"
                 v-for="item in userInfo.deviceNumber">
                     <li>{{item}}</li>
-                </ul>
+                </ul> -->
             </van-collapse-item>
             </van-collapse>
         </van-row>
@@ -41,7 +41,8 @@
     import url from '../modules/js/api.js';
     import { Row, Col,Search,Toast,Collapse, CollapseItem,Tag } from 'vant';
     Vue.use(Row).use(Col).use(Search).use(Toast).use(Collapse).use(CollapseItem).use(Tag);
-
+    
+    import 'vant/lib/vant-css/icon-local.css';
 
     export default{
         name:'searchyw',
@@ -88,10 +89,9 @@
     #container p{
         color:#2c3e50;
         font-size:22px;
-        font-weight:bold;
-        font-family:Helvetica, Arial, sans-serif;
         text-align:left;
         margin:10px;
+        font-family:pingfangcu;
     }
 
     .search_wrap{
@@ -102,6 +102,7 @@
         margin-top:20px;
         border:1px solid black;
     }
+
 </style>
 
 
