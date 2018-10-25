@@ -20,7 +20,11 @@
         </van-row>
 
         <van-row class="content_wrap">
-            <div>{{psptId}}</div>
+
+            <p v-show="ywflag===true" v-bind:style="{color:!subNumbers? '#44BB00':'#ff4444'}">
+                <van-icon name="zhihuizhongxin" size="30px" v-bind:color="!subNumbers? '#44BB00':'#ff4444'"/>
+                {{psptId}}
+            </p>
             <van-button round type="danger" size="small" v-show="!!subNumbers && ywflag===true">非异网</van-button>
             <van-button round type="primary" size="small" v-show="!subNumbers && ywflag===true">异网</van-button>
         </van-row>
@@ -35,9 +39,9 @@
     import Vue from 'vue';
     import axios from 'axios';
     import url from '../modules/js/api.js';
-    import { Row, Col,Search,Toast,NavBar,Panel  } from 'vant';
+    import { Row, Col,Search,Toast,NavBar,Panel,Icon  } from 'vant';
     Vue.use(Row).use(Col).use(Search).use(Toast)
-    .use(NavBar);
+    .use(NavBar).use(Icon);
     
 
     export default{
@@ -83,10 +87,15 @@
 
 <style scoped>
     #container p{
-        color:#2c3e50;
-        font-size:22px;
-        margin:10px;
-        font-family:pingfangcu;
+        color: #2c3e50;
+        font-size: 20px;
+        margin: 10px;
+        font-family: pingfangcu;
+        font-weight:600;
+        /* background-color:#eee; */
+        height: 40px;
+        border-radius: 10px;
+        line-height: 40px;
     }
 
     .search_wrap{
@@ -100,6 +109,14 @@
         background-color:#4C55A2;
         color:#fff;
         font-family:pingfangcu;
+    }
+
+    .van-icon {
+        font-family: 'vant-icon', 'custom-iconfont' !important;
+    }
+    .van-icon-zhihuizhongxin:before { content: "\e660"; }
+    .ywflag{
+        color:red;
     }
 
 </style>
