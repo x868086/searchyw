@@ -12,6 +12,7 @@
                     v-model="psptId"
                     placeholder="请输入搜索证件号"
                     show-action
+                    v-on:click="isShow"
                     >
                     <div slot="action" @click="searchyw">搜索</div>
                 </van-search>
@@ -19,17 +20,9 @@
         </van-row>
 
         <van-row class="content_wrap">
-            <van-panel title="标题" status="状态" class="yw_content">
-                <div slot="header">
-                    <van-cell-group>
-                        <van-cell v-bind:value="psptId" />
-                        <van-tag round type="danger" size="large">非异网</van-tag>
-                        <van-tag round type="success" size="large">异网</van-tag>
-                    </van-cell-group>
-
-
-                </div>
-            </van-panel>
+            <div>{{psptId}}</div>
+            <van-button round type="danger" size="small" v-show="!!subNumbers && ywflag===true">非异网</van-button>
+            <van-button round type="primary" size="small" v-show="!subNumbers && ywflag===true">异网</van-button>
         </van-row>
 
 
@@ -42,9 +35,9 @@
     import Vue from 'vue';
     import axios from 'axios';
     import url from '../modules/js/api.js';
-    import { Row, Col,Search,Toast,Tag,NavBar,Panel,Cell, CellGroup  } from 'vant';
-    Vue.use(Row).use(Col).use(Search).use(Toast).use(Tag)
-        .use(NavBar).use(Panel).use(Cell).use(CellGroup);
+    import { Row, Col,Search,Toast,NavBar,Panel  } from 'vant';
+    Vue.use(Row).use(Col).use(Search).use(Toast)
+    .use(NavBar);
     
 
     export default{
@@ -52,7 +45,8 @@
         data(){
             return{
                 psptId:'',
-                subNumbers:null
+                subNumbers:null,
+                ywflag:false
             }
         },
         methods:{
@@ -62,6 +56,10 @@
             checkInput(){
                 return (!!this.psptId===false || this.psptId.length < 18)
             },
+            isShow(){
+                this.ywflag=false;
+                this.psptId=null;
+            },
             searchyw(){
                 if(this.checkInput()){
                     return Toast('请输入正确的证件信息')  
@@ -69,9 +67,9 @@
 
                 let data={psptId:this.psptId}
                 axios.post(url.searchyw,data).then(res=>{
-                    if(res.data.statusCode===200){
-                        this.subNumbers.concat(res.data.subnumber)
- 
+                    if(res.data.statusCode==='200'){
+                        this.subNumbers=res.data.subnumber
+                        this.ywflag=true
                     }else{
                         Toast('网络请求错误')
                     }
