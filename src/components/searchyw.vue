@@ -1,7 +1,12 @@
 <template>
     <div id="container">
+        <van-nav-bar title="异网信息查询" class="nav-bar">
+            <van-icon name="arrow-left" slot="left" color="#fff"
+            @click="onClickLeft"/>
+            <van-icon name="info-o" slot="right" color="#fff"/>
+        </van-nav-bar>
+
         <van-row class="search_wrap">
-            <van-col span="24"><p>异网标记查询</p></van-col>
             <van-col span="24">
                 <van-search
                     v-model="psptId"
@@ -14,19 +19,17 @@
         </van-row>
 
         <van-row class="content_wrap">
-            <van-collapse v-model="activeNames" v-show="!!userInfo.psptId">
-            <van-collapse-item name="1">
-                <div slot="title">证件号码:{{userInfo.psptId}}
-                <van-tag round type="danger" v-show="userInfo.ywflag===false">非异网</van-tag>
-                <van-tag round type="success" v-show="userInfo.ywflag===true">异网</van-tag>
-                <van-icon name="aim" size="22px"/>累计查询次数{{queryCounts}}
+            <van-panel title="标题" status="状态" class="yw_content">
+                <div slot="header">
+                    <van-cell-group>
+                        <van-cell v-bind:value="psptId" />
+                        <van-tag round type="danger" size="large">非异网</van-tag>
+                        <van-tag round type="success" size="large">异网</van-tag>
+                    </van-cell-group>
+
+
                 </div>
-                <!-- <ul v-show="userInfo.deviceNumber instanceof Array"
-                v-for="item in userInfo.deviceNumber">
-                    <li>{{item}}</li>
-                </ul> -->
-            </van-collapse-item>
-            </van-collapse>
+            </van-panel>
         </van-row>
 
 
@@ -39,26 +42,23 @@
     import Vue from 'vue';
     import axios from 'axios';
     import url from '../modules/js/api.js';
-    import { Row, Col,Search,Toast,Collapse, CollapseItem,Tag } from 'vant';
-    Vue.use(Row).use(Col).use(Search).use(Toast).use(Collapse).use(CollapseItem).use(Tag);
+    import { Row, Col,Search,Toast,Tag,NavBar,Panel,Cell, CellGroup  } from 'vant';
+    Vue.use(Row).use(Col).use(Search).use(Toast).use(Tag)
+        .use(NavBar).use(Panel).use(Cell).use(CellGroup);
     
-    import 'vant/lib/vant-css/icon-local.css';
 
     export default{
         name:'searchyw',
         data(){
             return{
-                activeNames:['1'],
-                userId:'admin001',
-                queryCounts:'',
-                userInfo:{
-                    psptId:'',
-                    deviceNumber:null,
-                    ywflag:""
-                }
+                psptId:'',
+                subNumbers:null
             }
         },
         methods:{
+            onClickLeft(){
+                this.$router.push({ path: '/main' })
+            },
             checkInput(){
                 return (!!this.psptId===false || this.psptId.length < 18)
             },
@@ -67,12 +67,10 @@
                     return Toast('请输入正确的证件信息')  
                 }
 
-                let data={userId:this.userId,psptId:this.psptId}
+                let data={psptId:this.psptId}
                 axios.post(url.searchyw,data).then(res=>{
                     if(res.data.statusCode===200){
-                        this.userInfo=res.data.userInfo
-                        this.queryCounts=res.data.queryCounts
-                        this.userInfo.ywflag=!!!this.userInfo.deviceNumber
+                        this.subNumbers.concat(res.data.subnumber)
  
                     }else{
                         Toast('网络请求错误')
@@ -89,7 +87,6 @@
     #container p{
         color:#2c3e50;
         font-size:22px;
-        text-align:left;
         margin:10px;
         font-family:pingfangcu;
     }
@@ -100,7 +97,11 @@
 
     .content_wrap{
         margin-top:20px;
-        border:1px solid black;
+    }
+    .nav-bar{
+        background-color:#4C55A2;
+        color:#fff;
+        font-family:pingfangcu;
     }
 
 </style>
